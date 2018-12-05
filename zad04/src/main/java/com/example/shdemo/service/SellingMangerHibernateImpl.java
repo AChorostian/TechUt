@@ -3,13 +3,12 @@ package com.example.shdemo.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.shdemo.domain.Artist;
+import com.example.shdemo.domain.Song;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.example.shdemo.domain.Car;
-import com.example.shdemo.domain.Person;
 
 @Component
 @Transactional
@@ -27,93 +26,93 @@ public class SellingMangerHibernateImpl implements SellingManager {
 	}
 	
 	@Override
-	public void addClient(Person person) {
-		person.setId(null);
-		sessionFactory.getCurrentSession().persist(person);
+	public void addArtist(Artist artist) {
+		artist.setId(null);
+		sessionFactory.getCurrentSession().persist(artist);
 	}
 	
 	@Override
-	public void deleteClient(Person person) {
-		person = (Person) sessionFactory.getCurrentSession().get(Person.class,
-				person.getId());
+	public void deleteArtist(Artist artist) {
+		artist = (Artist) sessionFactory.getCurrentSession().get(Artist.class,
+				artist.getId());
 		
 		// lazy loading here
-		for (Car car : person.getCars()) {
-			car.setSold(false);
-			sessionFactory.getCurrentSession().update(car);
+		for (Song song : artist.getSongs()) {
+			song.setSold(false);
+			sessionFactory.getCurrentSession().update(song);
 		}
-		sessionFactory.getCurrentSession().delete(person);
+		sessionFactory.getCurrentSession().delete(artist);
 	}
 
 	@Override
-	public List<Car> getOwnedCars(Person person) {
-		person = (Person) sessionFactory.getCurrentSession().get(Person.class,
-				person.getId());
+	public List<Song> getOwnedSongs(Artist artist) {
+		artist = (Artist) sessionFactory.getCurrentSession().get(Artist.class,
+				artist.getId());
 		// lazy loading here - try this code without (shallow) copying
-		List<Car> cars = new ArrayList<Car>(person.getCars());
-		return cars;
+		List<Song> songs = new ArrayList<Song>(artist.getSongs());
+		return songs;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Person> getAllClients() {
-		return sessionFactory.getCurrentSession().getNamedQuery("person.all")
+	public List<Artist> getAllArtists() {
+		return sessionFactory.getCurrentSession().getNamedQuery("artist.all")
 				.list();
 	}
 
 	@Override
-	public Person findClientByPin(String pin) {
-		return (Person) sessionFactory.getCurrentSession().getNamedQuery("person.byPin").setString("pin", pin).uniqueResult();
+	public Artist findArtistById(Long id) {
+		return (Artist) sessionFactory.getCurrentSession().getNamedQuery("artist.byId").setLong("id", id).uniqueResult();
 	}
 
 
 	@Override
-	public Long addNewCar(Car car) {
-		car.setId(null);
-		return (Long) sessionFactory.getCurrentSession().save(car);
+	public Long addNewSong(Song song) {
+		song.setId(null);
+		return (Long) sessionFactory.getCurrentSession().save(song);
 	}
 
 	@Override
-	public void sellCar(Long personId, Long carId) {
-		Person person = (Person) sessionFactory.getCurrentSession().get(
-				Person.class, personId);
-		Car car = (Car) sessionFactory.getCurrentSession()
-				.get(Car.class, carId);
-		car.setSold(true);
-		person.getCars().add(car);
+	public void sellSong(Long personId, Long carId) {
+		Artist artist = (Artist) sessionFactory.getCurrentSession().get(
+				Artist.class, personId);
+		Song song = (Song) sessionFactory.getCurrentSession()
+				.get(Song.class, carId);
+		song.setSold(true);
+		artist.getSongs().add(song);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Car> getAvailableCars() {
-		return sessionFactory.getCurrentSession().getNamedQuery("car.unsold")
+	public List<Song> getAvailableSongs() {
+		return sessionFactory.getCurrentSession().getNamedQuery("song.unsold")
 				.list();
 	}
 	@Override
-	public void disposeCar(Person person, Car car) {
+	public void disposeSong(Artist artist, Song song) {
 
-		person = (Person) sessionFactory.getCurrentSession().get(Person.class,
-				person.getId());
-		car = (Car) sessionFactory.getCurrentSession().get(Car.class,
-				car.getId());
+		artist = (Artist) sessionFactory.getCurrentSession().get(Artist.class,
+				artist.getId());
+		song = (Song) sessionFactory.getCurrentSession().get(Song.class,
+				song.getId());
 
-		Car toRemove = null;
-		// lazy loading here (person.getCars)
-		for (Car aCar : person.getCars())
-			if (aCar.getId().compareTo(car.getId()) == 0) {
-				toRemove = aCar;
+		Song toRemove = null;
+		// lazy loading here (artist.getSongs)
+		for (Song aSong : artist.getSongs())
+			if (aSong.getId().compareTo(song.getId()) == 0) {
+				toRemove = aSong;
 				break;
 			}
 
 		if (toRemove != null)
-			person.getCars().remove(toRemove);
+			artist.getSongs().remove(toRemove);
 
-		car.setSold(false);
+		song.setSold(false);
 	}
 
 	@Override
-	public Car findCarById(Long id) {
-		return (Car) sessionFactory.getCurrentSession().get(Car.class, id);
+	public Song findSongById(Long id) {
+		return (Song) sessionFactory.getCurrentSession().get(Song.class, id);
 	}
 
 }

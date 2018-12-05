@@ -9,12 +9,12 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "car.unsold", query = "Select c from Car c where c.sold = false")
+		@NamedQuery(name = "song.unsold", query = "Select c from Song c where c.sold = false")
 })
-public class Car {
+public class Song {
 
 	private Long id;
-	private String make;
+	private String title;
 	private String model;
 	private Boolean sold = false;
 
@@ -28,12 +28,12 @@ public class Car {
 		this.id = id;
 	}
 
-	public String getMake() {
-		return make;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setMake(String make) {
-		this.make = make;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public String getModel() {
