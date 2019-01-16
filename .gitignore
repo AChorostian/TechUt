@@ -5,3 +5,7 @@
 *.xml
 *.iml
 *.DS_Store
+*.kotlin_module
+*.class
+zad04/target/*
+*.log
