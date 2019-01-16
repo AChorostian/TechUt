@@ -188,17 +188,50 @@ public class MusicServiceImplementation implements MusicService {
 		sessionFactory.getCurrentSession().update(artist);
 	}
 
+	@Override
+	public void updateFile(File file)
+	{
+		file = (File) sessionFactory.getCurrentSession().get(File.class, file.getId());
+		sessionFactory.getCurrentSession().update(file);
+	}
+
+	@Override
+	public void updateGenre(Genre genre)
+	{
+		genre = (Genre) sessionFactory.getCurrentSession().get(Genre.class, genre.getId());
+		sessionFactory.getCurrentSession().update(genre);
+	}
+
+	@Override
+	public void updatePlaylist(Playlist playlist)
+	{
+		playlist = (Playlist) sessionFactory.getCurrentSession().get(Playlist.class, playlist.getId());
+		sessionFactory.getCurrentSession().update(playlist);
+	}
+
+	@Override
+	public void updateSong(Song song)
+	{
+		song = (Song) sessionFactory.getCurrentSession().get(Song.class, song.getId());
+		sessionFactory.getCurrentSession().update(song);
+	}
+
 	// DELETE
 
 	@Override
 	public void deleteAlbum(Album album)
 	{
 		album = (Album) sessionFactory.getCurrentSession().get(Album.class, album.getId());
-//		// cascade delete
-//		for (Album album : artist.getAlbums())
-//		{
-//			sessionFactory.getCurrentSession().delete(album);
-//		}
+
+		for (Song song : getAllSongs() )
+		{
+			if (song.getAlbum().getId() == album.getId())
+			{
+				song.setAlbum(null);
+				updateSong(song);
+			}
+		}
+
 		sessionFactory.getCurrentSession().delete(album);
 	}
 
@@ -206,6 +239,16 @@ public class MusicServiceImplementation implements MusicService {
 	public void deleteArtist(Artist artist)
 	{
 		artist = (Artist) sessionFactory.getCurrentSession().get(Artist.class, artist.getId());
+
+		for (Album album : getAllAlbums() )
+		{
+			if ( album.getArtist().getId() == artist.getId() )
+			{
+				album.setArtist(null);
+				updateAlbum(album);
+			}
+		}
+
 		sessionFactory.getCurrentSession().delete(artist);
 	}
 

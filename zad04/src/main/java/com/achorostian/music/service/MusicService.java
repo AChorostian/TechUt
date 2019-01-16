@@ -44,6 +44,10 @@ public interface MusicService
 
 	void updateAlbum(Album album);
 	void updateArtist(Artist artist);
+	void updateFile(File file);
+	void updateGenre(Genre genre);
+	void updatePlaylist(Playlist playlist);
+	void updateSong(Song song);
 
 	// DELETE
 
