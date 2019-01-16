@@ -42,7 +42,8 @@ public interface MusicService
 
 	// UPDATE
 
-
+	void updateAlbum(Album album);
+	void updateArtist(Artist artist);
 
 	// DELETE
 
@@ -52,14 +53,5 @@ public interface MusicService
 	void deleteGenre(Genre genre);
 	void deletePlaylist(Playlist playlist);
 	void deleteSong(Song song);
-
-	
-//	Long addNewCar(Album album);
-//	List<Album> getAvailableCars();
-//	void disposeCar(Artist artist, Album album);
-//	Album findCarById(Long id);
-//
-//	List<Album> getOwnedCars(Artist artist);
-//	void sellCar(Long personId, Long carId);
 
 }

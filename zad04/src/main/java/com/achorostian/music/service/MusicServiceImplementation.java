@@ -172,6 +172,24 @@ public class MusicServiceImplementation implements MusicService {
 			return sessionFactory.getCurrentSession().getNamedQuery("song.all").list();
 		}
 
+	// UPDATE
+
+	@Override
+	public void updateAlbum(Album album)
+	{
+		album = (Album) sessionFactory.getCurrentSession().get(Album.class, album.getId());
+		sessionFactory.getCurrentSession().update(album);
+	}
+
+	@Override
+	public void updateArtist(Artist artist)
+	{
+		artist = (Artist) sessionFactory.getCurrentSession().get(Artist.class, artist.getId());
+		sessionFactory.getCurrentSession().update(artist);
+	}
+
+	// DELETE
+
 	@Override
 	public void deleteAlbum(Album album)
 	{

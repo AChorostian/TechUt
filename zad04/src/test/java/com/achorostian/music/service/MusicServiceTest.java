@@ -23,6 +23,8 @@ public class MusicServiceTest
 	@Autowired
 	MusicService musicService;
 
+	// CREATE
+
 	@Test
 	public void addAlbum()
 	{
@@ -121,4 +123,268 @@ public class MusicServiceTest
 		Song retrievedSong = musicService.findSongsByName("Rocket Man").get(0);
 		assertEquals(218, retrievedSong.getLength() );
 	}
+
+	// READ
+
+	@Test
+	public void getAllAlbums()
+	{
+		Artist artist = new Artist();
+		artist.setName("Mark Knight");
+		artist.setBirthDate( new Date() );
+		musicService.addArtist(artist);
+
+		Album album = new Album();
+		album.setName("A Year In The Life");
+		album.setReleaseYear(2016);
+		album.setEp(false);
+		album.setArtist( artist );
+		musicService.addAlbum(album);
+
+		Album album2 = new Album();
+		album2.setName("New Direction");
+		album2.setReleaseYear(2012);
+		album2.setEp(false);
+		album2.setArtist( artist );
+		musicService.addAlbum(album2);
+
+		assertEquals(2, musicService.getAllAlbums().size());
+	}
+
+	@Test
+	public void getAllArtists()
+	{
+		Artist artist = new Artist();
+		artist.setName("Mark Knight");
+		artist.setBirthDate( new Date() );
+		musicService.addArtist(artist);
+
+		Artist artist2 = new Artist();
+		artist2.setName("Harry Romero");
+		artist2.setBirthDate( new Date() );
+		musicService.addArtist(artist2);
+
+		Artist artist3 = new Artist();
+		artist3.setName("Riva Starr");
+		artist3.setBirthDate( new Date() );
+		musicService.addArtist(artist3);
+
+		assertEquals(3, musicService.getAllArtists().size());
+	}
+
+	@Test
+	public void getAllFiles()
+	{
+		File file = new File();
+		file.setName("track02.mp3");
+		file.setLocation("MarkKnight/tracks/");
+		file.setSize(5603);
+		file.setBitrate(320);
+		musicService.addFile(file);
+
+		assertEquals(1 , musicService.getAllFiles().size() );
+	}
+
+	@Test
+	public void getAllGenres()
+	{
+		Genre genre = new Genre();
+		genre.setName("Electronic");
+		musicService.addGenre(genre);
+
+		Genre genre2 = new Genre();
+		genre2.setName("House");
+		musicService.addGenre(genre2);
+
+		Genre genre3 = new Genre();
+		genre3.setName("Techno");
+		musicService.addGenre(genre3);
+
+		Genre genre4 = new Genre();
+		genre4.setName("Tech-House");
+		musicService.addGenre(genre4);
+
+		assertEquals(4 , musicService.getAllGenres().size() );
+	}
+
+	@Test
+	public void GetAllPlaylists()
+	{
+		Artist artist = new Artist();
+		artist.setName("Mark Knight");
+		artist.setBirthDate( new Date() );
+		musicService.addArtist(artist);
+
+		Playlist playlist = new Playlist();
+		playlist.setName("Saturday Party");
+		playlist.setArtist(artist);
+		musicService.addPlaylist(playlist);
+
+		Playlist playlist2 = new Playlist();
+		playlist2.setName("Lazy Morning");
+		playlist2.setArtist(artist);
+		musicService.addPlaylist(playlist2);
+
+		assertEquals(2 , musicService.getAllPlaylists().size() );
+	}
+
+	@Test
+	public void GetAllSongs()
+	{
+		Artist artist = new Artist();
+		artist.setName("Mark Knight");
+		artist.setBirthDate( new Date() );
+		musicService.addArtist(artist);
+
+		Album album = new Album();
+		album.setName("A Year In The Life");
+		album.setReleaseYear(2016);
+		album.setEp(false);
+		album.setArtist( artist );
+		musicService.addAlbum(album);
+
+		Song song = new Song();
+		song.setName("Rocket Man");
+		song.setLength(218);
+		song.setAlbum( album );
+		musicService.addSong(song);
+
+		Song song2 = new Song();
+		song2.setName("Suzee");
+		song2.setLength(275);
+		song2.setAlbum( album );
+		musicService.addSong(song2);
+
+		assertEquals(2 , musicService.getAllSongs().size() );
+	}
+
+	// UPDATE
+
+	@Test
+	public void updateAlbum()
+	{
+		Artist artist = new Artist();
+		artist.setName("Mark Knight");
+		artist.setBirthDate( new Date() );
+		musicService.addArtist(artist);
+
+		Album album = new Album();
+		album.setName("A Year In Life");
+		album.setReleaseYear(2016);
+		album.setEp(false);
+		album.setArtist( artist );
+		musicService.addAlbum(album);
+
+		album.setName("A Year In The Life");
+		musicService.updateAlbum(album);
+
+		Album retrievedAlbum = musicService.findAlbumsByName("A Year In The Life").get(0);
+		assertEquals("A Year In The Life", retrievedAlbum.getName());
+	}
+
+	@Test
+	public void updateArtist()
+	{
+		Artist artist = new Artist();
+		artist.setName("Mark night");
+		artist.setBirthDate( new Date() );
+		musicService.addArtist(artist);
+
+		artist.setName("Mark Knight");
+		musicService.updateArtist(artist);
+
+		Artist retrievedArtist = musicService.findArtistByName("Mark Knight");
+		assertEquals("Mark Knight", retrievedArtist.getName());
+	}
+
+	@Test
+	public void updateFile()
+	{
+		File file = new File();
+		file.setName("track02.mp3");
+		file.setLocation("MarkKnight/tracks/");
+		file.setSize(5603);
+		file.setBitrate(320);
+		musicService.addFile(file);
+
+		File retrievedFile = musicService.findFilesByName("track02.mp3").get(0);
+		assertEquals("MarkKnight/tracks/", retrievedFile.getLocation() );
+	}
+
+	@Test
+	public void updateGenre()
+	{
+		Genre genre = new Genre();
+		genre.setName("Electronic");
+		musicService.addGenre(genre);
+
+		Genre retrievedGenre = musicService.findGenreByName("Electronic");
+		assertEquals("Electronic", retrievedGenre.getName() );
+	}
+
+	@Test
+	public void updatePlaylist()
+	{
+		Artist artist = new Artist();
+		artist.setName("Mark Knight");
+		artist.setBirthDate( new Date() );
+		musicService.addArtist(artist);
+
+		Playlist playlist = new Playlist();
+		playlist.setName("Saturday Party");
+		playlist.setArtist(artist);
+		musicService.addPlaylist(playlist);
+
+		Playlist retrievedPlaylist = musicService.findPlaylistsByName("Saturday Party").get(0);
+		assertEquals("Saturday Party", retrievedPlaylist.getName() );
+	}
+
+	@Test
+	public void updateSong()
+	{
+		Artist artist = new Artist();
+		artist.setName("Mark Knight");
+		artist.setBirthDate( new Date() );
+		musicService.addArtist(artist);
+
+		Album album = new Album();
+		album.setName("A Year In The Life");
+		album.setReleaseYear(2016);
+		album.setEp(false);
+		album.setArtist( artist );
+		musicService.addAlbum(album);
+
+		Song song = new Song();
+		song.setName("Rocket Man");
+		song.setLength(218);
+		song.setAlbum( album );
+		musicService.addSong(song);
+
+		Song retrievedSong = musicService.findSongsByName("Rocket Man").get(0);
+		assertEquals(218, retrievedSong.getLength() );
+	}
+
+	// DELETE
+
+	@Test
+	public void deleteAlbum()
+	{
+		Artist artist = new Artist();
+		artist.setName("Mark Knight");
+		artist.setBirthDate( new Date() );
+		musicService.addArtist(artist);
+
+		Album album = new Album();
+		album.setName("A Year In The Life");
+		album.setReleaseYear(2016);
+		album.setEp(false);
+		album.setArtist( artist );
+		musicService.addAlbum(album);
+
+		musicService.deleteAlbum(album);
+
+		assertEquals(0, musicService.getAllAlbums().size());
+	}
+
+
 }
