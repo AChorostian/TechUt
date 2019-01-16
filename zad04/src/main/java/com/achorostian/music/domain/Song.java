@@ -7,7 +7,6 @@ import java.util.*;
 @NamedQueries({
         @NamedQuery(name = "song.all", query = "Select s from Song s"),
         @NamedQuery(name = "song.byName", query = "Select s from Song s where s.name = :name")
-        //@NamedQuery(name = "song.byArtistId", query = "Select s from Song s where s.artist_id = :artist_id")
 })
 public class Song
 {
@@ -42,11 +41,11 @@ public class Song
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Album getAlbum() { return album; }
-    public void setAlbum(Album album) { this.album = album; }
+    public void setAlbum(Album album) { this.album = album; this.artist = album.getArtist(); }
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Artist getArtist() { return artist; }
-    public void setArtist(Artist artist) { this.artist = artist; }
+    public void setArtist(Artist artist) { if (this.album == null) this.artist = artist; }
 
     @OneToOne(fetch = FetchType.LAZY)
     public File getFile() {

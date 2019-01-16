@@ -102,7 +102,7 @@ public class MusicServiceImplementation implements MusicService {
 		@SuppressWarnings("unchecked")
 		public List<Song> findSongsByName(String name)
 		{
-			return sessionFactory.getCurrentSession().getNamedQuery("playlist.byName").setString("name", name).list();
+			return sessionFactory.getCurrentSession().getNamedQuery("song.byName").setString("name", name).list();
 		}
 
 		// FIND BY REFERENCE

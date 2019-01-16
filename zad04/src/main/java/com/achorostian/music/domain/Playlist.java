@@ -7,7 +7,6 @@ import java.util.*;
 @NamedQueries({
         @NamedQuery(name = "playlist.all", query = "Select p from Playlist p"),
         @NamedQuery(name = "playlist.byName", query = "Select p from Playlist p where p.name = :name")
-        //@NamedQuery(name = "playlist.byArtistId", query = "Select p from Playlist p where p.artist_id = :artist_id")
 })
 public class Playlist
 {

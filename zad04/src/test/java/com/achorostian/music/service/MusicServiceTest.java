@@ -2,11 +2,9 @@ package com.achorostian.music.service;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
-import com.achorostian.music.domain.Artist;
-import com.achorostian.music.domain.Album;
+import com.achorostian.music.domain.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,23 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = { "classpath:/beans.xml" })
 @TransactionConfiguration(transactionManager = "txManager", defaultRollback = true)
 @Transactional
-public class MusicServiceTest {
+public class MusicServiceTest
+{
 
 	@Autowired
 	MusicService musicService;
-
-	@Test
-	public void addArtist()
-	{
-		Artist artist = new Artist();
-		artist.setName("Mark Knight");
-		artist.setBirthDate( new Date() );
-		musicService.addArtist(artist);
-
-		Artist retrievedClient = musicService.findArtistByName("Mark Knight");
-
-		assertEquals("Mark Knight", retrievedClient.getName());
-	}
 
 	@Test
 	public void addAlbum()
@@ -49,62 +35,90 @@ public class MusicServiceTest {
 		album.setName("A Year In The Life");
 		album.setReleaseYear(2016);
 		album.setEp(false);
-		album.setArtist( musicService.findArtistByName("Mark Knight") );
+		album.setArtist( artist );
 		musicService.addAlbum(album);
 
 		Album retrievedAlbum = musicService.findAlbumsByName("A Year In The Life").get(0);
-		Artist connectedArtist = retrievedAlbum.getArtist();
-
 		assertEquals("A Year In The Life", retrievedAlbum.getName());
-		assertEquals("Mark Knight", connectedArtist.getName());
+		assertEquals("Mark Knight", retrievedAlbum.getArtist().getName());
 	}
 
-//	@Test
-//	public void addCarCheck() {
-//
-//		Album album = new Album();
-//		album.setName("Mark Knight");
-//		album.setModel("Mark Knight");
-//		// ... other properties here
-//
-//		Long carId = musicService.addNewCar(album);
-//
-//		Album retrievedAlbum = musicService.findCarById(carId);
-//		assertEquals("Mark Knight", retrievedAlbum.getName());
-//		assertEquals("Mark Knight", retrievedAlbum.getModel());
-//		// ... check other properties here
-//
-//	}
-//
-//	@Test
-//	public void sellCarCheck() {
-//
-//		Artist artist = new Artist();
-//		artist.setName("Mark Knight");
-//		//artist.setPin(PIN_2);
-//
-//		musicService.addArtist(artist);
-//
-//		Artist retrievedArtist = musicService.findArtistByName("Mark Knight");
-//
-//		Album album = new Album();
-//		album.setName("Mark Knight");
-//		album.setModel("Mark Knight");
-//
-//		Long carId = musicService.addNewCar(album);
-//
-//		musicService.sellCar(retrievedArtist.getId(), carId);
-//
-//		List<Album> ownedAlbums = musicService.getOwnedCars(retrievedArtist);
-//
-//		assertEquals(1, ownedAlbums.size());
-//		assertEquals("Mark Knight", ownedAlbums.get(0).getName());
-//		assertEquals("Mark Knight", ownedAlbums.get(0).getModel());
-//	}
-//
-//	// @Test -
-//	public void disposeCarCheck() {
-//		// Do it yourself
-//	}
+	@Test
+	public void addArtist()
+	{
+		Artist artist = new Artist();
+		artist.setName("Mark Knight");
+		artist.setBirthDate( new Date() );
+		musicService.addArtist(artist);
 
+		Artist retrievedArtist = musicService.findArtistByName("Mark Knight");
+		assertEquals("Mark Knight", retrievedArtist.getName());
+	}
+
+	@Test
+	public void addFile()
+	{
+		File file = new File();
+		file.setName("track02.mp3");
+		file.setLocation("MarkKnight/tracks/");
+		file.setSize(5603);
+		file.setBitrate(320);
+		musicService.addFile(file);
+
+		File retrievedFile = musicService.findFilesByName("track02.mp3").get(0);
+		assertEquals("MarkKnight/tracks/", retrievedFile.getLocation() );
+	}
+
+	@Test
+	public void addGenre()
+	{
+		Genre genre = new Genre();
+		genre.setName("Electronic");
+		musicService.addGenre(genre);
+
+		Genre retrievedGenre = musicService.findGenreByName("Electronic");
+		assertEquals("Electronic", retrievedGenre.getName() );
+	}
+
+	@Test
+	public void addPlaylist()
+	{
+		Artist artist = new Artist();
+		artist.setName("Mark Knight");
+		artist.setBirthDate( new Date() );
+		musicService.addArtist(artist);
+
+		Playlist playlist = new Playlist();
+		playlist.setName("Saturday Party");
+		playlist.setArtist(artist);
+		musicService.addPlaylist(playlist);
+
+		Playlist retrievedPlaylist = musicService.findPlaylistsByName("Saturday Party").get(0);
+		assertEquals("Saturday Party", retrievedPlaylist.getName() );
+	}
+
+	@Test
+	public void addSong()
+	{
+		Artist artist = new Artist();
+		artist.setName("Mark Knight");
+		artist.setBirthDate( new Date() );
+		musicService.addArtist(artist);
+
+		Album album = new Album();
+		album.setName("A Year In The Life");
+		album.setReleaseYear(2016);
+		album.setEp(false);
+		album.setArtist( artist );
+		musicService.addAlbum(album);
+
+		Song song = new Song();
+		song.setName("Rocket Man");
+		song.setLength(218);
+		song.setAlbum( album );
+		musicService.addSong(song);
+
+		Song retrievedSong = musicService.findSongsByName("Rocket Man").get(0);
+		assertEquals(218, retrievedSong.getLength() );
+	}
 }
