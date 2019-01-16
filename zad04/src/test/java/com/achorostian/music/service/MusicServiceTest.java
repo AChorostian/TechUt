@@ -376,6 +376,34 @@ public class MusicServiceTest
 		assertEquals("Rocket Man", retrievedSong.getName() );
 	}
 
+	// ADVANCED UPDATE
+
+	@Test
+	public void updateFilesLocation()
+	{
+		File file = new File();
+		file.setName("track02.mp3");
+		file.setLocation("MarkKnight/tracks/");
+		file.setSize(5603);
+		file.setBitrate(320);
+		musicService.addFile(file);
+
+		File file2 = new File();
+		file2.setName("track05.mp3");
+		file2.setLocation("MarkKnight/tracks/");
+		file2.setSize(5603);
+		file2.setBitrate(320);
+		musicService.addFile(file2);
+
+		musicService.updateFilesLocation("MarkKnight/tracks/", "Mark/tracks/");
+
+		File retrievedFile1 = musicService.findFilesByName("track02.mp3").get(0);
+		File retrievedFile2 = musicService.findFilesByName("track05.mp3").get(0);
+
+		assertEquals("Mark/tracks/", retrievedFile1.getLocation() );
+		assertEquals("Mark/tracks/", retrievedFile2.getLocation() );
+	}
+
 	// DELETE
 
 	@Test

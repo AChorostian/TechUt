@@ -49,6 +49,10 @@ public interface MusicService
 	void updatePlaylist(Playlist playlist);
 	void updateSong(Song song);
 
+	// ADVANCED UPDATE
+
+	void updateFilesLocation(String oldLocation, String newLocation);
+
 	// DELETE
 
 	void deleteAlbum(Album album);
@@ -57,5 +61,7 @@ public interface MusicService
 	void deleteGenre(Genre genre);
 	void deletePlaylist(Playlist playlist);
 	void deleteSong(Song song);
+
+
 
 }

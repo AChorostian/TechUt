@@ -216,6 +216,21 @@ public class MusicServiceImplementation implements MusicService {
 		sessionFactory.getCurrentSession().update(song);
 	}
 
+	// ADVANCED UPDATE
+
+	@Override
+	public void updateFilesLocation(String oldLocation, String newLocation)
+	{
+		for (File file : getAllFiles() )
+		{
+			if ( file.getLocation().equals(oldLocation) )
+			{
+				file.setLocation(newLocation);
+				updateFile(file);
+			}
+		}
+	}
+
 	// DELETE
 
 	@Override
